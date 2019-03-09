@@ -15,10 +15,61 @@
 			var stage = document.getElementById('stage') ;
 			var ctg = stage.getContext("2d");
 
-			ctg.fillStyle = "black";
-			ctg.fillRect(0,0, stage.width, stage.height);
+			setInterval(game, 100/15);
 
+			const velocidade = 1;
+			var vx = vy = 0;
+			//posição inicial da cobra
+			var px = py = 10;
+			//tamanho dos pixels
+			var tamanho = 20;
+			//quantidade dos pixels
+			var qtd = 20;
+			//posição inicial da maça
+			var applex = appley =15;
 
+			var trail = [];
+			trail = 5;
+
+			function game(){
+				px += vx; 
+				py += vy;
+
+				if(px < 0){
+					px = qtd-1;
+				}
+
+				if(px > qtd-1){
+					px = 0;
+				}
+
+				if(py < 0){
+					py = qtd-1;
+				}
+
+				if(py > qtd-1){
+					py = 0;
+				}
+
+				//pintando o fundo
+				ctg.fillStyle = "black";
+				ctg.fillRect(0,0, stage.width, stage.height);
+
+				//pintando a maça
+				ctg.fillStyle = "red";
+				ctg.fillRect(ax*tamanho, ay*tamanho, tamanho, tamanho);
+
+				//pintando a cobra
+				ctg.fillStyle = "gray";
+				for(var i = 0; i < trail.length; i++){
+					ctg.fillRect(trail[i].x*tamanho, trail[i].y*tamanho, tamanho, tamanho);
+
+					//verificando se a calda bateu na cabeça
+					if(trail[i].x = px && trail[i].y = py){
+						vx = vx = 0;
+					}
+				}
+			}
 
 
 		}

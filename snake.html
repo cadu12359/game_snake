@@ -3,11 +3,16 @@
 <head>
 	<meta charset="utf-8">
 	<title>Jogo da cobrinha</title>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
+	<h1 class="titulo">Snake Game</h1>
+
 	<canvas id="stage" width="400px" height="400px"></canvas>
 
+	<h5 class="creditos">Desenvolvido por Carlos Eduardo Santos Lima.</h5>
 	<script>
 		
 		window.onload = function(){
@@ -15,9 +20,12 @@
 			var stage = document.getElementById('stage') ;
 			var ctg = stage.getContext("2d");
 
-			setInterval(game, 100/15);
+			document.addEventListener("keydown", keyPush);
 
-			const velocidade = 1;
+			setInterval(game, 80);
+			//numero de pixels que a cobra irá andar a cada intervalo
+			const vel = 1;
+
 			var vx = vy = 0;
 			//posição inicial da cobra
 			var px = py = 10;
@@ -26,11 +34,13 @@
 			//quantidade dos pixels
 			var qtd = 20;
 			//posição inicial da maça
-			var applex = appley =15;
+			var ax = ay =15;
 
+			//Rastro da cobra e definição do tamanho inicial
 			var trail = [];
-			trail = 5;
+			tail = 3;
 
+			//controle da cobra dentro do quadro para repetição nas bordas
 			function game(){
 				px += vx; 
 				py += vy;
@@ -62,22 +72,76 @@
 				//pintando a cobra
 				ctg.fillStyle = "gray";
 				for(var i = 0; i < trail.length; i++){
-					ctg.fillRect(trail[i].x*tamanho, trail[i].y*tamanho, tamanho, tamanho);
+					ctg.fillRect(trail[i].x*tamanho, trail[i].y*tamanho, tamanho-1, tamanho-1);
 
 					//verificando se a calda bateu na cabeça e parando a cobra
 					if(trail[i].x == px && trail[i].y == py){
-						vx = vx = 0;
+						vx = vy = 0;
+						tail = 3;
+
+
 					}
 				}
 
-				trail.push(x:px, y:py);
-				while (trail.length > trail) {
+				trail.push({x:px,y:py })
+				while (trail.length > tail) {
 					trail.shift();
+				}
+
+				//verificando se a cobra comeu a maçã e almentando seu tamanho (tail)
+				if(ax == px && ay == py){
+					tail++;
+					ax = Math.floor(Math.random()*qtd);
+					ay = Math.floor(Math.random()*qtd);
 				}
 			}
 
+			window.addEventListener("keydown", function(e) {
+	        	// space and arrow keys
+	       	 	if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+	            e.preventDefault();
+	        	}
+    		}, false);
 
+			let lastKeyPressed = "";
+
+			function keyPush(event){
+				//verificando qual tecla foi apertada e se a ultima tecla não foi a do sentido contrário
+				switch (event.keyCode) {
+				case 37: // Left
+		            if(lastKeyPressed != "right"){
+						vx = -vel
+						vy = 0
+		            lastKeyPressed = "left"
+		             }
+				break
+				case 38: // up
+		            if(lastKeyPressed != "down"){
+						vx = 0
+						vy = -vel
+		            lastKeyPressed = "up"
+		            }
+				break
+				case 39: // right
+		            if(lastKeyPressed != "left"){
+						vx = vel
+						vy = 0
+		            lastKeyPressed = "right"
+		            }
+				break
+				case 40: // down
+		            if(lastKeyPressed != "up"){
+						vx = 0
+						vy = vel
+		            lastKeyPressed = "down"
+		            }
+				break;
+			}		
+			
 		}
+
+
+	}
 		
 
 

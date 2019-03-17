@@ -64,10 +64,15 @@
 				for(var i = 0; i < trail.length; i++){
 					ctg.fillRect(trail[i].x*tamanho, trail[i].y*tamanho, tamanho, tamanho);
 
-					//verificando se a calda bateu na cabeça
-					if(trail[i].x = px && trail[i].y = py){
+					//verificando se a calda bateu na cabeça e parando a cobra
+					if(trail[i].x == px && trail[i].y == py){
 						vx = vx = 0;
 					}
+				}
+
+				trail.push(x:px, y:py);
+				while (trail.length > trail) {
+					trail.shift();
 				}
 			}
 
